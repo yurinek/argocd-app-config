@@ -7,17 +7,24 @@ spec:
   project: default
 
   source:
-    repoURL: https://gitlab.com/nanuchi/argocd-app-config.git
-    targetRevision: HEAD
-    path: dev
+    repoURL: https://github.com/yurinek/argocd-app-config.git
+    targetRevision: HEAD                    # last commit
+    path: dev                               # subdir
   destination: 
-    server: https://kubernetes.default.svc
+    server: https://kubernetes.default.svc  # internal service name of k8s api server, works only if argocd is installed in same cluster. can be checked with:
+    # kubectl get svc
+    # NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+    # kubernetes   ClusterIP   10.43.0.1    <none>        443/TCP   37d
+    # for different cluster external endpoint needs to be provided
     namespace: myapp
 
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
 
+    # argocd polls git repo every 3 min. if no delay desired: git webhook can be configured
+    # manual changes in cluster will be deleted, git changes will be auto applied to cluster
+    # following is not enabled by default 
     automated:
       selfHeal: true
       prune: true
