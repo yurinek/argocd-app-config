@@ -1,3 +1,20 @@
+#---
+## in case of none default project, it needs to be explicitely created
+#apiVersion: argoproj.io/v1alpha1
+#kind: AppProject
+#metadata:
+#  name: pg-db-prod
+#  namespace: argocd
+#spec:
+#  sourceRepos:
+#    - '*'
+#  destinations:
+#    - namespace: '*'
+#      server: '*'
+#  clusterResourceWhitelist:
+#    - group: '*'
+#      kind: '*'
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -16,6 +33,7 @@ spec:
     # NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
     # kubernetes   ClusterIP   10.43.0.1    <none>        443/TCP   37d
     # for different cluster external endpoint needs to be provided
+    # namespace can be any arbitrary ns or none existent ns, it only will be used for destination if there is no ns property in manifest to sync
     namespace: myapp
 
   syncPolicy:
